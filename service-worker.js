@@ -12,22 +12,57 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', (event) => {
-  console.log('Service Worker installing.');
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
+  );
   self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating.');
+  event.waitUntil(
+    caches.keys().then((keys) => Promise.all(
+      keys.map((k) => (k !== CACHE_NAME ? caches.delete(k) : null))
+    ))
+  );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    caches.match(event.request).then((resp) => {
+      return resp || fetch(event.request).then((response) => {
+        // optionally cache fetched responses
+        return response;
+      });
+    }).catch(() => {
+      // optional: return offline fallback page for navigation requests
+      if (event.request.mode === 'navigate') {
+        return caches.match('./index.html');
+      }
     })
   );
 });
 
+// ********************************
+// self.addEventListener('install', (event) => {
+//   console.log('Service Worker installing.');
+//   self.skipWaiting();
+// });
+
+// self.addEventListener('activate', (event) => {
+//   console.log('Service Worker activating.');
+// });
+
+// self.addEventListener('fetch', (event) => {
+//   event.respondWith(
+//     caches.match(event.request).then((response) => {
+//       return response || fetch(event.request);
+//     })
+//   );
+// });
+
+
+// !!!!!!!!!!!!!!!!!!!!!!!!
 // const CACHE_NAME = 'kiran-portfolio-v1';
 // const urlsToCache = [
 //   '/',
