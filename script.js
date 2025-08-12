@@ -66,20 +66,20 @@ sr.reveal('.home__social-icon,.resume__container',{ interval: 200});
 sr.reveal('.skills__data, .work__img,.work__container,.contact_email,.contact_phone',{interval: 200}); 
 
 
-document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', function() {
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    this.classList.add('active');
-  });
-});
+// document.querySelectorAll('.nav-links a').forEach(link => {
+//   link.addEventListener('click', function() {
+//     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+//     this.classList.add('active');
+//   });
+// });
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(reg => console.log('Service Worker registered:', reg))
-      .catch(err => console.log('Service Worker registration failed:', err));
-  });
-}
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('/service-worker.js')
+//       .then(reg => console.log('Service Worker registered:', reg))
+//       .catch(err => console.log('Service Worker registration failed:', err));
+//   });
+// }
 // let deferredPrompt;
 
 // window.addEventListener('beforeinstallprompt', (e) => {
@@ -107,18 +107,18 @@ if ('serviceWorker' in navigator) {
 
 
 
-// // PWA Service Worker Registration
-// if ('serviceWorker' in navigator) {
-//     window.addEventListener('load', () => {
-//         navigator.serviceWorker.register('/service-worker.js')
-//             .then((registration) => {
-//                 console.log('SW registered: ', registration);
-//             })
-//             .catch((registrationError) => {
-//                 console.log('SW registration failed: ', registrationError);
-//             });
-//     });
-// }
+// PWA Service Worker Registration
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then((registration) => {
+                console.log('SW registered: ', registration);
+            })
+            .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+            });
+    });
+}
 
 // PWA Install Prompt
 let deferredPrompt;
