@@ -80,34 +80,34 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.log('Service Worker registration failed:', err));
   });
 }
-let deferredPrompt;
+// let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault(); // stop auto popup
-  deferredPrompt = e;
+// window.addEventListener('beforeinstallprompt', (e) => {
+//   e.preventDefault(); // stop auto popup
+//   deferredPrompt = e;
 
-  // Show your custom install button
-  const installBtn = document.getElementById('installBtn');
-  installBtn.style.display = 'block';
+//   // Show your custom install button
+//   const installBtn = document.getElementById('installBtn');
+//   installBtn.style.display = 'block';
 
-  installBtn.addEventListener('click', () => {
-    installBtn.style.display = 'none';
-    deferredPrompt.prompt();
+//   installBtn.addEventListener('click', () => {
+//     installBtn.style.display = 'none';
+//     deferredPrompt.prompt();
 
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted install');
-      } else {
-        console.log('User dismissed install');
-      }
-      deferredPrompt = null;
-    });
-  });
-});
+//     deferredPrompt.userChoice.then((choiceResult) => {
+//       if (choiceResult.outcome === 'accepted') {
+//         console.log('User accepted install');
+//       } else {
+//         console.log('User dismissed install');
+//       }
+//       deferredPrompt = null;
+//     });
+//   });
+// });
 
 
 
-// PWA Service Worker Registration
+// // PWA Service Worker Registration
 // if ('serviceWorker' in navigator) {
 //     window.addEventListener('load', () => {
 //         navigator.serviceWorker.register('/service-worker.js')
@@ -120,84 +120,84 @@ window.addEventListener('beforeinstallprompt', (e) => {
 //     });
 // }
 
-// // PWA Install Prompt
-// let deferredPrompt;
+// PWA Install Prompt
+let deferredPrompt;
 
-// window.addEventListener('beforeinstallprompt', (e) => {
-//     // Prevent Chrome 67 and earlier from automatically showing the prompt
-//     e.preventDefault();
-//     // Stash the event so it can be triggered later
-//     deferredPrompt = e;
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
     
-//     // Show install button or banner
-//     showInstallPromotion();
-// });
+    // Show install button or banner
+    showInstallPromotion();
+});
 
-// function showInstallPromotion() {
-//     // Create install button if it doesn't exist
-//     if (!document.getElementById('install-button')) {
-//         const installButton = document.createElement('button');
-//         installButton.id = 'install-button';
-//         installButton.textContent = 'Install App';
-//         installButton.style.cssText = `
-//             position: fixed;
-//             bottom: 20px;
-//             right: 20px;
-//             background: var(--first-color);
-//             color: white;
-//             border: none;
-//             padding: 12px 24px;
-//             border-radius: 25px;
-//             cursor: pointer;
-//             font-weight: 600;
-//             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-//             z-index: 1000;
-//             transition: transform 0.2s ease;
-//         `;
+function showInstallPromotion() {
+    // Create install button if it doesn't exist
+    if (!document.getElementById('install-button')) {
+        const installButton = document.createElement('button');
+        installButton.id = 'install-button';
+        installButton.textContent = 'Install App';
+        installButton.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--first-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            transition: transform 0.2s ease;
+        `;
         
-//         installButton.addEventListener('mouseenter', () => {
-//             installButton.style.transform = 'scale(1.05)';
-//         });
+        installButton.addEventListener('mouseenter', () => {
+            installButton.style.transform = 'scale(1.05)';
+        });
         
-//         installButton.addEventListener('mouseleave', () => {
-//             installButton.style.transform = 'scale(1)';
-//         });
+        installButton.addEventListener('mouseleave', () => {
+            installButton.style.transform = 'scale(1)';
+        });
         
-//         installButton.addEventListener('click', async () => {
-//             if (deferredPrompt) {
-//                 // Show the install prompt
-//                 deferredPrompt.prompt();
-//                 // Wait for the user to respond to the prompt
-//                 const { outcome } = await deferredPrompt.userChoice;
-//                 console.log(`User response to the install prompt: ${outcome}`);
-//                 // Clear the deferredPrompt variable
-//                 deferredPrompt = null;
-//                 // Hide the install button
-//                 installButton.remove();
-//             }
-//         });
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Show the install prompt
+                deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                // Clear the deferredPrompt variable
+                deferredPrompt = null;
+                // Hide the install button
+                installButton.remove();
+            }
+        });
         
-//         document.body.appendChild(installButton);
-//     }
-// }
+        document.body.appendChild(installButton);
+    }
+}
 
-// // Handle successful installation
-// window.addEventListener('appinstalled', (evt) => {
-//     console.log('Portfolio PWA was installed');
-//     // Hide install button if it exists
-//     const installButton = document.getElementById('install-button');
-//     if (installButton) {
-//         installButton.remove();
-//     }
-// });
+// Handle successful installation
+window.addEventListener('appinstalled', (evt) => {
+    console.log('Portfolio PWA was installed');
+    // Hide install button if it exists
+    const installButton = document.getElementById('install-button');
+    if (installButton) {
+        installButton.remove();
+    }
+});
 
-// // Handle online/offline status
-// window.addEventListener('online', () => {
-//     console.log('Back online');
-//     // You can show a notification here
-// });
+// Handle online/offline status
+window.addEventListener('online', () => {
+    console.log('Back online');
+    // You can show a notification here
+});
 
-// window.addEventListener('offline', () => {
-//     console.log('Gone offline');
-//     // You can show an offline notification here
-// });
+window.addEventListener('offline', () => {
+    console.log('Gone offline');
+    // You can show an offline notification here
+});
